@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/PrivateRemote.Protocol/PrivateRemote.Protocol.csproj" />
+    <ProjectReference Include="../../src/PrivateRemote.Transfer/PrivateRemote.Transfer.csproj" />
+    <ProjectReference Include="../../src/PrivateRemote.Transport/PrivateRemote.Transport.csproj" />
+    <ProjectReference Include="../../src/PrivateRemote.Relay/PrivateRemote.Relay.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../src/PrivateRemote.Client/DeviceStore.cs" Link="Client/DeviceStore.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/PairingApproval.cs" Link="Client/PairingApproval.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/PairingExchange.cs" Link="Client/PairingExchange.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/DeviceSessionFactory.cs" Link="Client/DeviceSessionFactory.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/PeerSessionHost.cs" Link="Client/PeerSessionHost.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/RemoteView.cs" Link="Client/RemoteView.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/InputControl.cs" Link="Client/InputControl.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/InteractiveDesktop.cs" Link="Client/InteractiveDesktop.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/DesktopSession.cs" Link="Client/DesktopSession.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/SessionFiles.cs" Link="Client/SessionFiles.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/DesktopWire.cs" Link="Client/DesktopWire.cs" />
+    <Compile Include="../../src/PrivateRemote.Client/JpegFrameBounds.cs" Link="Client/JpegFrameBounds.cs" />
+    <Compile Include="../../scripts/NativePeerLoopback.cs" Link="Transport/NativePeerLoopback.cs" />
+  </ItemGroup>
+</Project>

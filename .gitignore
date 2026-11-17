@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+.vs/
+.dotnet-sdk/
+.native/
+artifacts/
+*.pfx
+*.key
+*.pem
+*.secret
+*.token
+*.zip

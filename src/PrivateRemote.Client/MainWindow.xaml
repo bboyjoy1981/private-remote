@@ -1,0 +1,122 @@
+<Window x:Class="PrivateRemote.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PrivateRemote.Client"
+        mc:Ignorable="d"
+        Title="Private Remote · 信令追踪版" Height="850" Width="1100" MinHeight="800" MinWidth="1000"
+        Background="#F4F6FA" WindowStartupLocation="CenterScreen">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="Private Remote" FontSize="26" FontWeight="SemiBold" Foreground="#172033" />
+                <TextBlock Text="仅连接你已配对的 Windows 设备" Margin="0,4,0,0" Foreground="#64748B" />
+            </StackPanel>
+            <Border DockPanel.Dock="Right" Background="#E8EEF8" CornerRadius="14" Padding="12,7" VerticalAlignment="Center">
+                <TextBlock x:Name="IdentityBadge" Text="身份初始化中" Foreground="#315A9A" FontWeight="SemiBold" />
+            </Border>
+        </DockPanel>
+
+        <Border Grid.Row="1" Background="White" CornerRadius="12" Padding="18" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="本机配对邀请" FontSize="16" FontWeight="SemiBold" Foreground="#172033" />
+                    <TextBlock x:Name="InvitationText" Text="生成一次性邀请，让另一台电脑发起配对" Margin="0,5,0,0" Foreground="#64748B" />
+                </StackPanel>
+                <WrapPanel Grid.Column="1" MaxWidth="490" VerticalAlignment="Center">
+                    <Button x:Name="CreateInviteButton" Content="生成邀请" Padding="18,10" Click="CreateInviteButton_Click" />
+                    <Button x:Name="CopyInviteButton" Content="复制配对码" IsEnabled="False" Padding="18,10" Margin="8,0,0,0" Click="CopyInviteButton_Click" />
+                    <Button x:Name="ExportInviteButton" Content="导出邀请文件" Padding="14,10" Margin="8,0,0,0" Click="ExportInviteButton_Click" />
+                    <Button x:Name="ImportPairingButton" Content="导入配对文件" Padding="14,10" Margin="0,8,8,0" Click="ImportPairingButton_Click" />
+                    <Button x:Name="ExportPairingReplyButton" Content="重新导出申请/回执" IsEnabled="False" Padding="14,10" Margin="0,8,0,0" Click="ExportPairingReplyButton_Click" />
+                </WrapPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.1*" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="0.9*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="White" CornerRadius="12" Padding="18">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                        <TextBlock Text="已配对设备" FontSize="17" FontWeight="SemiBold" Foreground="#172033" />
+                        <TextBlock Text="可撤销设备授权；撤销后该设备不能重新连接。" Margin="0,4,0,0" Foreground="#64748B" />
+                    </StackPanel>
+                    <ListView x:Name="DevicesList" BorderThickness="0" SelectionChanged="DevicesList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#E8ECF2" BorderThickness="0,0,0,1" Padding="6,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Foreground="#172033" />
+                                            <TextBlock Text="{Binding StatusText}" FontSize="12" Foreground="#64748B" Margin="0,4,0,0" />
+                                            <TextBlock Text="{Binding DeviceId}" FontSize="10" Foreground="#94A3B8" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Button Content="改名" Tag="{Binding DeviceId}" Click="RenameDeviceButton_Click" Padding="10,5" Margin="0,0,6,0" />
+                                            <Button Content="撤销" Tag="{Binding DeviceId}" Click="RevokeDeviceButton_Click" Padding="10,5" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DockPanel>
+            </Border>
+            <Border Grid.Column="2" Background="White" CornerRadius="12" Padding="18">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="连接状态" FontSize="17" FontWeight="SemiBold" Foreground="#172033" />
+                    <Border x:Name="StatusBorder" Background="#F1F5F9" CornerRadius="10" Padding="12" Margin="0,14,0,12">
+                        <StackPanel>
+                            <TextBlock x:Name="ConnectionStatus" Text="未连接" FontSize="15" FontWeight="SemiBold" Foreground="#475569" />
+                            <TextBlock x:Name="ConnectionDetails" Text="远程传输组件尚未配置" TextWrapping="Wrap" Margin="0,5,0,0" Foreground="#64748B" />
+                        </StackPanel>
+                    </Border>
+                    <Button Content="复制连接诊断" Padding="12,7" Margin="0,0,0,10" Click="CopyConnectionDiagnosticsButton_Click" />
+                    <TextBlock Text="信令服务地址" Foreground="#475569" />
+                    <TextBox x:Name="SignalEndpoint" Text="ws://127.0.0.1:5080/signal" Margin="0,5,0,10" Padding="7" />
+                    <TextBlock Text="本机服务令牌" Foreground="#475569" />
+                    <PasswordBox x:Name="SignalToken" Margin="0,5,0,10" Padding="7" />
+                    <TextBlock Text="服务证书 SHA-256（导入配置后自动填写）" Foreground="#475569" />
+                    <TextBox x:Name="SignalCertificate" Margin="0,5,0,10" Padding="7" />
+                    <TextBlock Text="本机局域网 IPv4（启动服务时使用）" Foreground="#475569" />
+                    <TextBox x:Name="LanAddress" Margin="0,5,0,10" Padding="7" />
+                    <Button x:Name="StartLanButton" Content="本机启动信令并导出另一台配置" Padding="14,9" Margin="0,0,0,10" Click="StartLanButton_Click" />
+                    <Button Content="导入本机连接配置" Padding="14,9" Margin="0,0,0,10" Click="ImportConnectionButton_Click" />
+                    <Button x:Name="ConnectServiceButton" Content="连接信令服务" Padding="14,9" Click="ConnectServiceButton_Click" />
+                    <Button x:Name="ConnectDeviceButton" Content="连接选中的设备" IsEnabled="False" Margin="0,10,0,0" Padding="14,9" Click="ConnectDeviceButton_Click" />
+                    <Button x:Name="OpenDesktopButton" Content="打开远程桌面" IsEnabled="False" Margin="0,10,0,0" Padding="14,9" Click="OpenDesktopButton_Click" />
+                    <Button x:Name="OpenFilesButton" Content="文件传输" IsEnabled="False" Margin="0,10,0,0" Padding="14,9" Click="OpenFilesButton_Click" />
+                    <TextBlock Text="配对：A 导出邀请 → B 导入并发回申请 → A 批准并发回回执 → B 导入回执。须在 5 分钟内完成。远程画面为 JPEG 基础模式；公网 TURN 尚未接入。" Margin="0,12,0,0" TextWrapping="Wrap" Foreground="#64748B" />
+                    <Button x:Name="DisconnectButton" Content="断开连接" IsEnabled="False" Margin="0,14,0,0" Padding="14,9" Click="DisconnectButton_Click" />
+                </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <DockPanel Grid.Row="3" Margin="0,16,0,0">
+            <Button DockPanel.Dock="Right" Content="退出软件" Padding="12,6" Click="ExitApplicationButton_Click" />
+            <TextBlock x:Name="FooterStatus" Foreground="#64748B" Text="准备就绪 · 关闭主窗口会收起到右下角托盘" TextWrapping="Wrap" Margin="0,0,12,0" />
+        </DockPanel>
+    </Grid>
+</Window>

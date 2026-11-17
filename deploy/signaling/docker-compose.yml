@@ -1,0 +1,11 @@
+services:
+  signaling:
+    build:
+      context: ../../src/PrivateRemote.Relay
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_ENVIRONMENT: Production
+      RelayAdmin__BearerToken: ${RELAY_ADMIN_TOKEN:?set a random admin token in the server environment}
+    ports:
+      - "127.0.0.1:8080:8080"
